@@ -52,8 +52,7 @@
         "package.json"
       ],
       "output": [
-        "dist/**",
-        "README.md"
+        "dist/**"
       ]
     }
   },
