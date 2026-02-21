@@ -2,13 +2,17 @@ import path from 'node:path';
 
 import { RouteManifestEntry } from '../src/utils/manifest';
 import { nextRoutesUniversal, routePrefix } from '../src/nextRoutes';
+import { normalizeSlashes } from '../src/utils/normalizeSlashes';
 
 const APP_DIR = path.join('test', 'root', 'app');
 const ROUTES_DIR = path.join(APP_DIR, 'routes');
 
 function pathToRouteId(fullPath: string) {
-  const name = path.relative(APP_DIR, fullPath).replace(/\.[^/.]+$/, '');
-  return path.join(routePrefix, name);
+  const name = normalizeSlashes(path.relative(APP_DIR, fullPath)).replace(
+    /\.[^/.]+$/,
+    '',
+  );
+  return [routePrefix, name].join('/');
 }
 
 type RouteManifestTestCase = {
