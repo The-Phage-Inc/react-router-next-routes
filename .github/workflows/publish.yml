@@ -2,19 +2,22 @@ name: Publish
 on:
   release:
     types: [ created ]
+
+permissions:
+  id-token: write
+  contents: write
+  packages: write
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    permissions:
-      contents: write
-      packages: write
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
       # リリースタグを取得して package.json を更新
@@ -32,8 +35,6 @@ jobs:
 
       - name: Publish
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
       - name: Commit and push changes
         env:

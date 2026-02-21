@@ -11,7 +11,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.20.4
+          node-version: 24
           cache: npm
 
       - name: NPM install
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.20.4
+          node-version: 24
           cache: npm
 
       - name: NPM install
