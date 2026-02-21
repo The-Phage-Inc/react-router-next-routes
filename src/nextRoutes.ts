@@ -104,11 +104,11 @@ export function nextRoutesUniversal(
   const routeIds = new Map<string, string[]>();
 
   for (const fullPath of routes) {
-    const dirName = path.dirname(fullPath);
-    const routeId = path.join(
+    const dirName = normalizeSlashes(path.dirname(fullPath));
+    const routeId = [
       routePrefix,
       path.posix.relative(normalizedApp, dirName),
-    );
+    ].join('/');
 
     const conflict = routeIds.get(routeId);
     if (conflict) {
@@ -126,7 +126,7 @@ export function nextRoutesUniversal(
 
   function getParentId(routeId: string) {
     // prefix
-    const prefixPath = path.join(routePrefix, prefix);
+    const prefixPath = [routePrefix, prefix].join('/');
     // Remove the prefix from the routeId
     routeId = routeId.slice(prefixPath.length + 1);
     const segments = routeId.split('/');
@@ -146,7 +146,9 @@ export function nextRoutesUniversal(
     const layoutPath = findModule(fullPaths, layoutName, routeModuleExts);
     if (layoutPath) {
       const layoutId = `${routeId}/${layoutName}`;
-      const filepath = path.relative(normalizedApp, layoutPath);
+      const filepath = normalizeSlashes(
+        path.relative(normalizedApp, layoutPath),
+      );
       routeManifest[layoutId] = {
         id: layoutId,
         file: filepath,
@@ -159,7 +161,7 @@ export function nextRoutesUniversal(
     const pagePath = findModule(fullPaths, pageName, routeModuleExts);
     if (pagePath) {
       const pageId = `${routeId}/${pageName}`;
-      const filepath = path.relative(normalizedApp, pagePath);
+      const filepath = normalizeSlashes(path.relative(normalizedApp, pagePath));
       const pathname = getPathname(routeId, prefix);
       routeManifest[pageId] = {
         id: pageId,
@@ -215,7 +217,7 @@ function findModule(
 
 function getPathname(routeId: string, prefix: string) {
   // Remove the prefix from the routeId
-  routeId = routeId.slice(path.join(routePrefix, prefix).length + 1);
+  routeId = routeId.slice([routePrefix, prefix].join('/').length + 1);
   const segments = routeId.split('/');
 
   const filteredSegments = segments.filter((segment) => {
