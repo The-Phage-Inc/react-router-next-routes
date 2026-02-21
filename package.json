@@ -1,6 +1,6 @@
 {
   "name": "react-router-next-routes",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "File system routing conventions like Next.js, for use with React Router in routes.ts.",
   "bugs": {
     "url": "https://github.com/The-Phage-Inc/react-router-next-routes/issues"
